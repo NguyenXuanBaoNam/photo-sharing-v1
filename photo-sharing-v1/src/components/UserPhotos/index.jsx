@@ -5,6 +5,9 @@ import { Link, useParams } from "react-router-dom";
 import "./styles.css";
 import models from "../../modelData/models";
 
+// Tạo context để load ảnh động từ src/images
+const imageContext = require.context("../../images", false, /\.(png|jpe?g|gif|webp)$/i);
+
 function formatDate(dateString) {
   try {
     const d = new Date(dateString);
@@ -33,7 +36,13 @@ function UserPhotos() {
           <CardMedia
             component="img"
             alt={photo.file_name}
-            image={new URL("../../images/" + photo.file_name, import.meta.url).toString()}
+            image={(() => {
+              try {
+                return imageContext("./" + photo.file_name);
+              } catch (_) {
+                return ""; // fallback rỗng nếu ảnh không tồn tại
+              }
+            })()}
           />
           <CardContent>
             <Typography variant="subtitle2" gutterBottom>
