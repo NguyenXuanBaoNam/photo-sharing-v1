@@ -33,7 +33,7 @@ function UserPhotos() {
           <CardMedia
             component="img"
             alt={photo.file_name}
-            image={require("../../images/" + photo.file_name)}
+            image={new URL("../../images/" + photo.file_name, import.meta.url).toString()}
           />
           <CardContent>
             <Typography variant="subtitle2" gutterBottom>

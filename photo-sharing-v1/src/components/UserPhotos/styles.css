@@ -1,0 +1,10 @@
+/* Khoảng cách giữa các thẻ ảnh */
+.MuiCard-root {
+  margin-bottom: 16px;
+}
+
+/* Khoảng cách nhỏ cho các đoạn bình luận */
+.MuiCardContent-root .MuiTypography-root {
+  margin-top: 4px;
+}
+

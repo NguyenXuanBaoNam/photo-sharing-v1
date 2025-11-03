@@ -1,0 +1,6 @@
+/* Tinh chỉnh khoảng cách cho ListItem */
+.MuiListItem-root {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
