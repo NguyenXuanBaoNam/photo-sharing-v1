@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Card, CardContent, CardMedia, Divider, Typography } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 
 import "./styles.css";
-import models from "../../modelData/models";
+import fetchModel from "../../lib/fetchModelData";
+
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
 // Tạo context để load ảnh động từ src/images
 const imageContext = require.context("../../images", false, /\.(png|jpe?g|gif|webp)$/i);
@@ -22,7 +24,30 @@ function formatDate(dateString) {
  */
 function UserPhotos() {
   const { userId } = useParams();
-  const photos = models.photoOfUserModel(userId);
+  const [photos, setPhotos] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadPhotos() {
+      try {
+        setLoading(true);
+        const data = await fetchModel(`${API_BASE_URL}/photosOfUser/${userId}`);
+        setPhotos(data);
+      } catch (error) {
+        console.error("Lỗi khi load photos:", error);
+        setPhotos([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    if (userId) {
+      loadPhotos();
+    }
+  }, [userId]);
+
+  if (loading) {
+    return <Typography variant="body1">Đang tải...</Typography>;
+  }
 
   if (!photos || photos.length === 0) {
     return <Typography variant="body1">Không có ảnh cho người dùng này.</Typography>;

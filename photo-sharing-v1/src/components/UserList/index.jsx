@@ -1,16 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Divider, List, ListItem, ListItemText } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 
 import "./styles.css";
-import models from "../../modelData/models";
+import fetchModel from "../../lib/fetchModelData";
+
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
 /**
  * Define UserList, a React component of Project 4.
  */
 function UserList() {
-  const users = models.userListModel();
+  const [users, setUsers] = useState([]);
   const location = useLocation();
+
+  useEffect(() => {
+    async function loadUsers() {
+      try {
+        const data = await fetchModel(`${API_BASE_URL}/user/list`);
+        setUsers(data);
+      } catch (error) {
+        console.error("Lỗi khi load users:", error);
+      }
+    }
+    loadUsers();
+  }, []);
 
   return (
     <div>
